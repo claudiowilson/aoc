@@ -15,7 +15,7 @@ TEST_CASE = [
 def convert_to_nums(nums):
     return [int(num.group()) for num in re.finditer('\d+', nums)]
         
-def part_one():
+def solution():
     cards = get_split_input(4)
     copies = collections.Counter({k: 1 for k in range(1, len(cards) + 1)})
     
@@ -32,7 +32,6 @@ def part_one():
         for i in range(1, len(same) + 1):
             copies[idx + 1 + i] += 1 * copies[idx + 1]
 
-    print(sum(copies.values()))
-    return sum(points)
+    return sum(points), sum(copies.values())
 
-print(part_one())
+print(solution())
