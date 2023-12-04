@@ -63,7 +63,7 @@ def close_gear_symbol(curr, graph):
 
 
 def traverse_gear_symbol(graph):
-    num_to_gear_symbols = {}
+    gear_to_num = defaultdict(list)
 
     for y, line in enumerate(graph):
         gear_symbols = set()
@@ -77,15 +77,16 @@ def traverse_gear_symbol(graph):
 
                 stack.append(char)
             elif len(stack) > 0:
-                if len(gear_symbols) > 0:
-                    num_to_gear_symbols[int(''.join(stack))] = gear_symbols
+                for gear in gear_symbols:
+                    gear_to_num[gear].append(int(''.join(stack)))
                 gear_symbols = set()
                 stack = []
 
         if len(stack) > 0 and len(gear_symbols) > 0:
-                num_to_gear_symbols[int(''.join(stack))] = gear_symbols
+                for gear in gear_symbols:
+                    gear_to_num[gear].append(int(''.join(stack)))
 
-    return num_to_gear_symbols
+    return gear_to_num
 
 def traverse(graph):
     valid_part_nums = []
@@ -116,16 +117,9 @@ def part_one():
     return sum(valid_part_nums)
 
 def part_two():
-    num_to_gear_symbol = traverse_gear_symbol(TEST_CASE_2)
-    gear_to_nums = defaultdict(list)
+    gear_to_num = traverse_gear_symbol(get_split_input(3))
 
-    for num, points in num_to_gear_symbol.items():
-        for point in points:
-            gear_to_nums[point].append(num)
-    
-    print(gear_to_nums)
-    valid = [nums[0] * nums[1] for (point, nums) in gear_to_nums.items() if len(nums) == 2]
-
+    valid = [nums[0] * nums[1] for (gear, nums) in gear_to_num.items() if len(nums) == 2]
     return sum(valid)
 
 def solution():
