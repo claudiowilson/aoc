@@ -84,19 +84,6 @@ def transform_mapping_to_ranges(mappings, current_range):
 
     return dests + non_intersect
 
-def get_mapped_values(mappings, current_range):
-    intersects = set()
-    non_intersect = current_range
-
-    for dest, source, source_len in mappings:
-        source_range = range(source, source + source_len)
-        intersect, non_intersects = get_intersections(source_range, current_range)
-
-        if intersect:
-            intersects.add(intersect)
-
-    return intersects
-
 def solution():
     lines = get_split_input(5)
     seeds_range = list(itertools.batched(map(int, lines[0][lines[0].index(':') + 2:].split()), 2))
